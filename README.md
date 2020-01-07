@@ -1,5 +1,60 @@
 # Backend Interview Problems
 
+# REPORT
+
+# json-manipulation
+
+```
+####Task1
+All this h...
+It was a c...
+I knew wha...
+
+####Task2
+All this h...
+It was a c...
+I knew wha...
+I did not ...
+I had of l...
+I walked o...
+
+####Task3
+(a) : 11
+(afternoon) : 1
+(all) : 3
+(an) : 3
+(and) : 18
+(appreciate) : 1
+
+```
+
+Task 4 has printout in the ```main/resources``` folder
+
+# mystery-duplicates
+
+if using an object as key, it directly uses the address it has, so each address is different, that's the culprit for the duplicates
+
+To make object as key and perform correctly, override the hashCode and equals method in the Employee class
+
+by adding this to Employee class can make it correct
+```
+  @Override
+  public int hashCode() {
+    return toString().hashCode();
+  }
+
+  public boolean equals(Object o) {
+    return o instanceof Employee && this.hashCode() == o.hashCode() ? true : false;
+  }
+
+  public String toString() {
+    return firstName + middleInitial + lastName + socialSecurityNumber;
+  }
+```
+
+
+# Description
+
 This directory contains two sets of problems in two subdirectores called
 `json-manipulation` and `mystery-duplicates`. Each contains its own `README.md`
 file which explain a set of `Task`s you need to complete.
