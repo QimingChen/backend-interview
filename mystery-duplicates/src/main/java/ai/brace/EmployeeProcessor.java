@@ -32,6 +32,11 @@ public class EmployeeProcessor
             stream.forEach(line -> {
                 final String[] elements = line.split(",");
                 final Employee emp = new Employee(elements[0], elements[1], elements[2], elements[3]);
+
+                // if using an object as key, it directly uses the address it has
+                // so each address is different, that's the culprit for the duplicates
+                // To make object as key and perform correctly
+                // override the hashCode and equals method in the Employee class
                 duplicateCount.put(emp, duplicateCount.getOrDefault(emp, 0) + 1);
             });
         }
