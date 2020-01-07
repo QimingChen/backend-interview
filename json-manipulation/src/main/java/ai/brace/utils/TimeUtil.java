@@ -9,6 +9,6 @@ public class TimeUtil {
   public static String epochToIso(long epochtime){
     ZoneOffset offset = ZoneOffset.UTC;
     LocalDateTime ldt = LocalDateTime.ofEpochSecond(epochtime, 0, offset);
-    return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").format(ldt);
+    return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.000'Z'").format(ldt);
   }
 }
