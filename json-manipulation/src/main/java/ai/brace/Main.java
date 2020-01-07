@@ -31,7 +31,7 @@ public class Main {
     a1Comments = a1Comments.stream()
         .sorted(Comparator.comparing(Comment::getId)) // sort ascendingly
         .collect(Collectors.toList());
-    a1Comments.forEach(comment -> System.out.println(comment.getTextdata()));
+    a1Comments.forEach(comment -> System.out.println(comment.getTextdata().substring(0, 10) + "..."));
     System.out.println("\n\n");
 
     // task2
@@ -46,7 +46,7 @@ public class Main {
         .flatMap(x -> x.stream())// merge
         .sorted(Comparator.comparing(Comment::getId)) // sort
         .collect(Collectors.toList());
-    comments.forEach(comment -> System.out.println(comment.getTextdata()));
+    comments.forEach(comment -> System.out.println(comment.getTextdata().substring(0, 10) + "..."));
     System.out.println("\n\n");
 
     // task3
@@ -85,50 +85,7 @@ public class Main {
     List<Book> books = new ArrayList<>();
     books.add(a1);
     books.add(a2);
-    Collections.sort(books, new Comparator<Book>() {
-      @Override
-      public int compare(Book o1, Book o2) {
-        return o2.getLastModified().compareTo(o1.getLastModified()); // reverse sort
-      }
-    });
-    Book latestBook = books.get(0);
-    books.remove(0);
-    for (Book b : books) {
-      if (latestBook.getVersion() == null || latestBook.getVersion().length() == 0) {
-        latestBook.setVersion(b.getVersion());
-      }
-      if (latestBook.getLastModified() == null || latestBook.getLastModified().length() == 0) {
-        latestBook.setLastModified(b.getLastModified());
-      }
-      if (latestBook.getTitle() == null || latestBook.getTitle().length() == 0) {
-        latestBook.setTitle(b.getTitle());
-      }
-      if (latestBook.getAuthor() == null || latestBook.getAuthor().length() == 0) {
-        latestBook.setAuthor(b.getAuthor());
-      }
-      if (latestBook.getTranslator() == null || latestBook.getTranslator().length() == 0) {
-        latestBook.setTranslator(b.getTranslator());
-      }
-      if (latestBook.getLanguage() == null || latestBook.getLanguage().length() == 0) {
-        latestBook.setLanguage(b.getLanguage());
-      }
-      if (latestBook.getReleaseDate() == null || latestBook.getReleaseDate().length() == 0) {
-        latestBook.setReleaseDate(b.getReleaseDate());
-      }
-
-      for (Comment c : b.getTextArray()) {
-        if (!latestBook.getTextArray().stream().anyMatch(t -> t.getId() == c.getId())) {
-          latestBook.getTextArray().add(c);
-        }
-      }
-    }
-
-    latestBook.setUuid(UUID.randomUUID().toString());
-    latestBook.setLastModified(TimeUtil.epochToIso(Long.parseLong(latestBook.getLastModified())));
-    latestBook.setTextArray(
-        latestBook.getTextArray().stream()
-            .sorted(Comparator.comparing(Comment::getId))
-            .collect(Collectors.toList()));
+    Book latestBook = Book.merge(books);
 
     GsonUtil.writeJsonFile(latestBook, "../../../../src/main/resources/newOutput.json");
     System.out.println("program ends");
